@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Форум AITU College — Регистрация</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0A2240;
+      /* AITU Dark Blue */
+      --primary-hover: #11345E;
+      --accent: #F9A826;
+      /* AITU Yellow/Gold */
+      --bg: #F4F7F9;
+      --card-bg: #FFFFFF;
+      --text: #333333;
+      --text-muted: #666666;
+      --border: #E2E8F0;
+      --error: #E53E3E;
+      --success: #38A169;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .logo-container {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo-container svg {
+      height: 48px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .stats {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      background: var(--bg);
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .stats strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(10, 34, 64, 0.1);
+    }
+
+    .form-group input.error {
+      border-color: var(--error);
+      background-color: #FFF5F5;
+    }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    .server-error {
+      background-color: #FFF5F5;
+      color: var(--error);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .server-error.visible {
+      display: block;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: var(--primary);
+      color: #FFF;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn:disabled {
+      background-color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    /* Loader */
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #FFF;
+      animation: spin 1s ease-in-out infinite;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .btn.loading .btn-text {
+      visibility: hidden;
+    }
+
+    .btn.loading .loader {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Success State */
+    .success-container {
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-container.visible {
+      display: block;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background-color: #E6FFFA;
+      color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .success-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .success-container h2 {
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .success-container p {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: var(--accent);
+      color: var(--primary);
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+      width: 100%;
+    }
+
+    .download-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- REGISTRATION VIEW -->
+    <div id="form-section">
+      <div class="logo-container">
+        <img src="/img/aitu-logo.svg" alt="AITU College" height="56">
+      </div>
+
+      <h1>Форум AITU College</h1>
+      <p class="subtitle">Регистрация участников</p>
+
+      <div class="stats">
+        Зарегистрировано: <strong id="stat-count">0</strong>
+      </div>
+
+      <div class="server-error" id="server-error"></div>
+
+      <form id="reg-form" novalidate>
+        <div class="form-group">
+          <label for="full_name">ФИО</label>
+          <input type="text" id="full_name" placeholder="Иванов Иван Иванович">
+          <div class="error-msg" id="err-full_name">Введите ваше ФИО (не менее 2 символов)</div>
+        </div>
+
+        <div class="form-group">
+          <label for="city">Город</label>
+          <input type="text" id="city" placeholder="Астана">
+          <div class="error-msg" id="err-city">Введите название города</div>
+        </div>
+
+        <div class="form-group">
+          <label for="college">Колледж</label>
+          <input type="text" id="college" placeholder="Например: AITU College">
+          <div class="error-msg" id="err-college">Укажите название колледжа</div>
+        </div>
+
+        <button type="submit" class="btn" id="submit-btn">
+          <span class="btn-text">Зарегистрироваться</span>
+          <div class="loader"></div>
+        </button>
+      </form>
+    </div>
+
+    <!-- SUCCESS VIEW -->
+    <div class="success-container" id="success-section">
+      <div class="success-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <h2>Успешная регистрация!</h2>
+      <p id="success-name-text">Вы успешно зарегистрировались на форум. Теперь вы можете скачать программу мероприятия.
+      </p>
+
+      <a href="/program.pdf" class="download-btn" download>
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Скачать программу форума
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // Fetch stats
+    fetch('http://localhost:3000/stats')
+      .then(r => r.json())
+      .then(d => {
+        const count = document.getElementById('stat-count');
+        if (d && d.total !== undefined) {
+          count.textContent = d.total;
+        }
+      })
+      .catch(err => console.error('Ошибка загрузки статистики', err));
+
+    // Validations
+    const form = document.getElementById('reg-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const serverError = document.getElementById('server-error');
+
+    function setError(id, msg) {
+      document.getElementById(id).classList.add('error');
+      document.getElementById('err-' + id).classList.add('visible');
+    }
+
+    function clearError(id) {
+      document.getElementById(id).classList.remove('error');
+      document.getElementById('err-' + id).classList.remove('visible');
+    }
+
+    ['full_name', 'city', 'college'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => clearError(id));
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      ['full_name', 'city', 'college'].forEach(clearError);
+      serverError.classList.remove('visible');
+
+      const data = {
+        full_name: document.getElementById('full_name').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        college: document.getElementById('college').value.trim(),
+      };
+
+      let hasError = false;
+      if (data.full_name.length < 2) { setError('full_name'); hasError = true; }
+      if (data.city.length < 2) { setError('city'); hasError = true; }
+      if (data.college.length < 2) { setError('college'); hasError = true; }
+
+      if (hasError) return;
+
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const json = await res.json();
+
+        if (!res.ok) {
+          serverError.textContent = json.error || 'Произошла ошибка при регистрации.';
+          serverError.classList.add('visible');
+        } else {
+          document.getElementById('form-section').style.display = 'none';
+          document.getElementById('success-section').classList.add('visible');
+
+          // Optionally update stat count here again as local optimistic update
+          const statEl = document.getElementById('stat-count');
+          statEl.textContent = parseInt(statEl.textContent || '0', 10) + 1;
+        }
+      } catch (err) {
+        serverError.textContent = 'Ошибка соединения с сервером. Пожалуйста, попробуйте позже.';
+        serverError.classList.add('visible');
+      } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+
+</html>

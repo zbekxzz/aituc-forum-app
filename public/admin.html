@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ — Форум AITU College</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0A2240;
+      --primary-hover: #11345E;
+      --accent: #F9A826;
+      --bg: #F4F7F9;
+      --card-bg: #FFFFFF;
+      --text: #333333;
+      --text-muted: #666666;
+      --border: #E2E8F0;
+      --error: #E53E3E;
+      --success: #38A169;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    header {
+      background: var(--primary);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-logo svg {
+      height: 28px;
+      display: block;
+    }
+
+    .header-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: rgba(249, 168, 38, 0.15);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    .header-link {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .header-link:hover {
+      color: #fff;
+    }
+
+    /* ── Main ───────────────────────────────────── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--primary);
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-export:hover { opacity: 0.9; }
+    .btn-export svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── Stats Cards ───────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    /* ── Table ──────────────────────────────────── */
+    .table-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--bg);
+    }
+
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #F8FAFC;
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    td:first-child {
+      color: var(--text-muted);
+      font-size: 13px;
+      width: 48px;
+      text-align: center;
+    }
+
+    td:last-child {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ── Empty & Loading ───────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .icon {
+      width: 48px;
+      height: 48px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .empty-state .icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 48px;
+      font-size: 14px;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      main { padding: 20px 16px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-card .value { font-size: 28px; }
+      h1 { font-size: 20px; }
+
+      /* Horizontal scroll for table */
+      .table-card { overflow-x: auto; }
+      table { min-width: 560px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="header-logo">
+        <img src="/img/aitu-logo.svg" alt="AITU College" height="32" style="filter: brightness(0) invert(1);">
+      </div>
+      <span class="header-badge">Админ-панель</span>
+    </div>
+    <a href="/" class="header-link">← На главную</a>
+  </header>
+
+  <main>
+    <div class="top-row">
+      <h1>Участники форума</h1>
+      <a href="/export" class="btn-export">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Экспорт в Excel
+      </a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Всего участников</div>
+        <div class="value" id="total-count">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Последняя регистрация</div>
+        <div class="value" id="last-reg" style="font-size: 20px;">—</div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <table id="participants-table">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>ФИО</th>
+            <th>Город</th>
+            <th>Колледж</th>
+            <th>Дата регистрации</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr class="loading-row"><td colspan="5">Загрузка данных...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    async function loadAll() {
+      try {
+        const res = await fetch('/participants');
+        const data = await res.json();
+
+        document.getElementById('total-count').textContent = data.length;
+
+        if (data.length > 0) {
+          const last = new Date(data[0].registered_at);
+          document.getElementById('last-reg').textContent =
+            last.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } else {
+          document.getElementById('last-reg').textContent = '—';
+        }
+
+        const tbody = document.getElementById('table-body');
+
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                  </div>
+                  <h3>Пока нет участников</h3>
+                  <p>Зарегистрированные участники появятся здесь</p>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = data.map((p, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${escHtml(p.full_name)}</td>
+            <td>${escHtml(p.city)}</td>
+            <td>${escHtml(p.college)}</td>
+            <td>${new Date(p.registered_at).toLocaleString('ru-RU')}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Ошибка загрузки данных', err);
+        document.getElementById('table-body').innerHTML = `
+          <tr><td colspan="5" style="text-align:center;padding:48px;color:var(--error);">Ошибка загрузки данных</td></tr>
+        `;
+      }
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    loadAll();
+    setInterval(loadAll, 30000);
+  </script>
+</body>
+</html>
