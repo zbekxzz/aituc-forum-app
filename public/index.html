@@ -347,7 +347,7 @@
 
   <script>
     // Fetch stats
-    fetch('http://localhost:3000/stats')
+    fetch('/stats')
       .then(r => r.json())
       .then(d => {
         const count = document.getElementById('stat-count');
@@ -399,7 +399,7 @@
       submitBtn.disabled = true;
 
       try {
-        const res = await fetch('http://localhost:3000/register', {
+        const res = await fetch('/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
