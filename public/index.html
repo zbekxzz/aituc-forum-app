@@ -287,36 +287,36 @@
         <img src="/img/aitu-logo.svg" alt="AITU College" height="56">
       </div>
 
-      <h1>Форум AITU College</h1>
-      <p class="subtitle">Регистрация участников</p>
+      <h1>«Кәсіби оқытудағы цифрлық технологиялар және жасанды интеллект» атты қалалық шебер-сынып</h1>
+      <p class="subtitle">Қатысушыларды тіркеу</p>
 
       <div class="stats">
-        Зарегистрировано: <strong id="stat-count">0</strong>
+        Тіркелгендер саны: <strong id="stat-count">0</strong>
       </div>
 
       <div class="server-error" id="server-error"></div>
 
       <form id="reg-form" novalidate>
         <div class="form-group">
-          <label for="full_name">ФИО</label>
-          <input type="text" id="full_name" placeholder="Иванов Иван Иванович">
-          <div class="error-msg" id="err-full_name">Введите ваше ФИО (не менее 2 символов)</div>
+          <label for="full_name">Аты-жөніңіз</label>
+          <input type="text" id="full_name" placeholder="Мысалы: Асқаров Асқар Асқарұлы">
+          <div class="error-msg" id="err-full_name">Толық аты-жөніңізді енгізіңіз (кемінде 2 таңба)</div>
         </div>
 
         <div class="form-group">
-          <label for="city">Город</label>
-          <input type="text" id="city" placeholder="Астана">
-          <div class="error-msg" id="err-city">Введите название города</div>
+          <label for="city">Қала</label>
+          <input type="text" id="city" placeholder="Мысалы: Астана">
+          <div class="error-msg" id="err-city">Қала атауын енгізіңіз</div>
         </div>
 
         <div class="form-group">
-          <label for="college">Колледж</label>
-          <input type="text" id="college" placeholder="Например: AITU College">
-          <div class="error-msg" id="err-college">Укажите название колледжа</div>
+          <label for="college">Колледж атауы</label>
+          <input type="text" id="college" placeholder="Мысалы: Колледж AITU">
+          <div class="error-msg" id="err-college">Колледж атауын енгізіңіз</div>
         </div>
 
         <button type="submit" class="btn" id="submit-btn">
-          <span class="btn-text">Зарегистрироваться</span>
+          <span class="btn-text">Тіркелу</span>
           <div class="loader"></div>
         </button>
       </form>
@@ -329,8 +329,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
         </svg>
       </div>
-      <h2>Успешная регистрация!</h2>
-      <p id="success-name-text">Вы успешно зарегистрировались на форум. Теперь вы можете скачать программу мероприятия.
+      <h2>Сәтті тіркелу!</h2>
+      <p id="success-name-text">Сіз форумға сәтті тіркелдіңіз. Енді сіз іс-шара бағдарламасын жүктей аласыз.
       </p>
 
       <a href="/program.pdf" class="download-btn" download>
@@ -339,7 +339,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
-        Скачать программу форума
+        Бағдарламаны жүктеу
       </a>
     </div>
 
