@@ -13,9 +13,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Init SQLite
-const db = new Database(path.join(__dirname, 'db', 'forum.db'));
+const dbPath = path.join(__dirname, 'db', 'forum.db');
 
-db.exec(`DROP TABLE IF EXISTS participants`);
+console.log('DB PATH:', dbPath);
+
+const db = new Database(dbPath);
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -132,7 +135,7 @@ app.get('/export', async (req, res) => {
     );
     res.setHeader(
       'Content-Disposition',
-      `attachment; filename="forum_participants_${new Date().toISOString().slice(0,10)}.xlsx"`
+      `attachment; filename="forum_participants_${new Date().toISOString().slice(0, 10)}.xlsx"`
     );
 
     await workbook.xlsx.write(res);
