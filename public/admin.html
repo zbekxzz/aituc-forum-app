@@ -299,7 +299,7 @@
           <tr>
             <th>№</th>
             <th>ФИО</th>
-            <th>Город</th>
+            <th>Телефон</th>
             <th>Колледж</th>
             <th>Дата регистрации</th>
           </tr>
@@ -352,7 +352,7 @@
           <tr>
             <td>${i + 1}</td>
             <td>${escHtml(p.full_name)}</td>
-            <td>${escHtml(p.city)}</td>
+            <td>${escHtml(p.phone)}</td>
             <td>${escHtml(p.college)}</td>
             <td>${new Date(p.registered_at).toLocaleString('ru-RU')}</td>
           </tr>

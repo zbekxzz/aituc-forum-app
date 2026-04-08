@@ -304,9 +304,9 @@
         </div>
 
         <div class="form-group">
-          <label for="city">Қала</label>
-          <input type="text" id="city" placeholder="Мысалы: Астана">
-          <div class="error-msg" id="err-city">Қала атауын енгізіңіз</div>
+          <label for="phone">Телефон нөмірі</label>
+          <input type="tel" id="phone" placeholder="+7 (700) 123-45-67" maxlength="18">
+          <div class="error-msg" id="err-phone">Толық телефон нөмірін енгізіңіз</div>
         </div>
 
         <div class="form-group">
@@ -372,25 +372,52 @@
       document.getElementById('err-' + id).classList.remove('visible');
     }
 
-    ['full_name', 'city', 'college'].forEach(id => {
+    ['full_name', 'phone', 'college'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => clearError(id));
+    });
+
+    // Phone mask: +7 (XXX) XXX-XX-XX
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function (e) {
+      let val = this.value.replace(/\D/g, ''); // only digits
+      // Always start with 7
+      if (val.length === 0) { this.value = ''; return; }
+      if (val[0] === '8') val = '7' + val.slice(1);
+      if (val[0] !== '7') val = '7' + val;
+      if (val.length > 11) val = val.slice(0, 11);
+
+      let formatted = '+7';
+      if (val.length > 1) formatted += ' (' + val.slice(1, 4);
+      if (val.length >= 4) formatted += ') ';
+      if (val.length > 4) formatted += val.slice(4, 7);
+      if (val.length > 7) formatted += '-' + val.slice(7, 9);
+      if (val.length > 9) formatted += '-' + val.slice(9, 11);
+
+      this.value = formatted;
+    });
+    phoneInput.addEventListener('focus', function () {
+      if (!this.value) this.value = '+7';
+    });
+    phoneInput.addEventListener('blur', function () {
+      if (this.value === '+7' || this.value === '+7 (') this.value = '';
     });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      ['full_name', 'city', 'college'].forEach(clearError);
+      ['full_name', 'phone', 'college'].forEach(clearError);
       serverError.classList.remove('visible');
 
       const data = {
         full_name: document.getElementById('full_name').value.trim(),
-        city: document.getElementById('city').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
         college: document.getElementById('college').value.trim(),
       };
 
       let hasError = false;
       if (data.full_name.length < 2) { setError('full_name'); hasError = true; }
-      if (data.city.length < 2) { setError('city'); hasError = true; }
+      // Check phone has 11 digits (+7 + 10 digits)
+      if (data.phone.replace(/\D/g, '').length !== 11) { setError('phone'); hasError = true; }
       if (data.college.length < 2) { setError('college'); hasError = true; }
 
       if (hasError) return;

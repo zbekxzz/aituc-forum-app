@@ -15,11 +15,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Init SQLite
 const db = new Database(path.join(__dirname, 'db', 'forum.db'));
 
+db.exec(`DROP TABLE IF EXISTS participants`);
 db.exec(`
   CREATE TABLE IF NOT EXISTS participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     full_name TEXT NOT NULL,
-    city TEXT NOT NULL,
+    phone TEXT NOT NULL,
     college TEXT NOT NULL,
     registered_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
@@ -27,30 +28,30 @@ db.exec(`
 
 // POST /register
 app.post('/register', (req, res) => {
-  const { full_name, city, college } = req.body;
+  const { full_name, phone, college } = req.body;
 
-  if (!full_name || !city || !college) {
-    return res.status(400).json({ error: 'Все поля обязательны' });
+  if (!full_name || !phone || !college) {
+    return res.status(400).json({ error: 'Барлық өрістер міндетті' });
   }
 
-  if (full_name.trim().length < 2 || city.trim().length < 2 || college.trim().length < 2) {
-    return res.status(400).json({ error: 'Заполните все поля корректно' });
+  if (full_name.trim().length < 2 || phone.trim().length < 2 || college.trim().length < 2) {
+    return res.status(400).json({ error: 'Барлық өрістерді дұрыс толтырыңыз' });
   }
 
   try {
     const stmt = db.prepare(
-      'INSERT INTO participants (full_name, city, college) VALUES (?, ?, ?)'
+      'INSERT INTO participants (full_name, phone, college) VALUES (?, ?, ?)'
     );
-    const result = stmt.run(full_name.trim(), city.trim(), college.trim());
+    const result = stmt.run(full_name.trim(), phone.trim(), college.trim());
 
     res.json({
       success: true,
       id: result.lastInsertRowid,
-      message: 'Регистрация успешна'
+      message: 'Тіркелу сәтті'
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    res.status(500).json({ error: 'Сервер қатесі' });
   }
 });
 
@@ -69,7 +70,7 @@ app.get('/export', async (req, res) => {
     sheet.columns = [
       { header: '№', key: 'id', width: 6 },
       { header: 'ФИО', key: 'full_name', width: 35 },
-      { header: 'Город', key: 'city', width: 20 },
+      { header: 'Телефон', key: 'phone', width: 20 },
       { header: 'Колледж', key: 'college', width: 35 },
       { header: 'Дата регистрации', key: 'registered_at', width: 22 },
     ];
@@ -90,7 +91,7 @@ app.get('/export', async (req, res) => {
       const row = sheet.addRow({
         id: i + 1,
         full_name: p.full_name,
-        city: p.city,
+        phone: p.phone,
         college: p.college,
         registered_at: new Date(p.registered_at).toLocaleString('ru-RU'),
       });
