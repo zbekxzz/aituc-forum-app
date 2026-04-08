@@ -1,3 +1,5 @@
+console.log("🔥 SERVER FILE LOADED");
+
 const express = require('express');
 const Database = require('better-sqlite3');
 const ExcelJS = require('exceljs');
